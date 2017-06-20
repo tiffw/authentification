@@ -20,6 +20,9 @@ $(document).ready(function () {
   $(".login").click(function() {
       console.log("my name is gt", firebase);
 
+    document.getElementById("login").style.visibility = "hidden";
+    document.getElementById("logout").style.visibility = "show";
+
   firebase.auth().signInWithPopup(provider).then(function(result) {
     console.log("hey what's up!");
   // This gives you a Google Access Token. You can use it to access the Google API.
@@ -39,12 +42,17 @@ $(document).ready(function () {
       // ...
       });
 
+    $(".logout").click(function() {
+      console.log("logging out", firebase);
+
       firebase.auth().signOut().then(function() {
         // Sign-out successful.
       }).catch(function(error) {
         // An error happened.
       });
+    });
   });
+
 
   //Submit ingredients or search for a recipe. Toggle.
   $("#find-recipe-btn").on("click", function () {
