@@ -2,12 +2,12 @@
 $(document).ready(function () {
     // Initialize Firebase
     var config = {
-      apiKey: "AIzaSyDajeVzARkijIBYGudhnqI2Xvy93OjIt74",
-      authDomain: "foodapp-39e77.firebaseapp.com",
-      databaseURL: "https://foodapp-39e77.firebaseio.com",
-      projectId: "foodapp-39e77",
+      apiKey: "AIzaSyBKSGxNhb2LEZeI4U7nwl8Jb8WpP7t6VnI",
+      authDomain: "mush-52d46.firebaseapp.com",
+      databaseURL: "https://mush-52d46.firebaseio.com",
+      projectId: "mush-52d46",
       storageBucket: "foodapp-39e77.appspot.com",
-      messagingSenderId: "188944854486"
+      messagingSenderId: "755973008880"
     };
 
     // var firebase = new Firebase("https://foodapp-39e77.firebaseio.com");
@@ -15,11 +15,10 @@ $(document).ready(function () {
     firebase.initializeApp(config);
     
 
-    var provider = new firebase.auth.GoogleAuthProvider();
-    
+  var provider = new firebase.auth.GoogleAuthProvider();
 
-$(".login").click(function() {
-    console.log("my name is gt", firebase);
+  $(".login").click(function() {
+      console.log("my name is gt", firebase);
 
   firebase.auth().signInWithPopup(provider).then(function(result) {
     console.log("hey what's up!");
