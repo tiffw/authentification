@@ -45,6 +45,9 @@ $(document).ready(function () {
     $(".logout").click(function() {
       console.log("logging out", firebase);
 
+      document.getElementById("login").style.visibility = "show";
+      document.getElementById("logout").style.visibility = "hidden";
+
       firebase.auth().signOut().then(function() {
         // Sign-out successful.
       }).catch(function(error) {
