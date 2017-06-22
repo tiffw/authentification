@@ -41,6 +41,7 @@ $(document).ready(function () {
       var credential = error.credential;
       // ...
       });
+  });
 
     $(".logout").click(function() {
       console.log("logging out", firebase);
