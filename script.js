@@ -41,7 +41,7 @@ $(document).ready(function () {
       var credential = error.credential;
       // ...
       });
-  });
+    });
 
     $(".logout").click(function() {
       console.log("logging out", firebase);
@@ -55,7 +55,7 @@ $(document).ready(function () {
         // An error happened.
       });
     });
-  });
+
 
 
   //Submit ingredients or search for a recipe. Toggle.
