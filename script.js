@@ -330,4 +330,3 @@ function nextPage() {
       $(".meals").show();
   });
 
-}
