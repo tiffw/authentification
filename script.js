@@ -41,13 +41,13 @@ $(document).ready(function () {
       var credential = error.credential;
       // ...
       });
-    });
 
     $(".logout").click(function() {
+                location.reload();
       console.log("logging out", firebase);
 
-      document.getElementById("login").style.visibility = "show";
-      document.getElementById("logout").style.visibility = "hidden";
+      // document.getElementById("login").style.visibility = "show";
+      // document.getElementById("logout").style.visibility = "hidden";
 
       firebase.auth().signOut().then(function() {
         // Sign-out successful.
@@ -55,7 +55,7 @@ $(document).ready(function () {
         // An error happened.
       });
     });
-
+  });
 
 
   //Submit ingredients or search for a recipe. Toggle.
