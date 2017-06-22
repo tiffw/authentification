@@ -227,4 +227,4 @@ $(document).ready(function() {
 		recipe.push(recipeInput);
 		console.log(recipe);
 	})
-});
+})
