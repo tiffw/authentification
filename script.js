@@ -158,9 +158,7 @@ $(document).ready(function () {
                                                                    				                          
                                                                                                      <h3 id="title-${i}"></h3>
                                   <a id="${linkID}" href="#">
-                                  <img id="${imageID}" /> 
-
-                                  </a>
+                                  <img id="${imageID}" /> </a>
                         </div>
                     </div>
                 </div>
