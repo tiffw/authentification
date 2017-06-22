@@ -58,7 +58,14 @@ $(document).ready(function () {
   });
 
 
-  //Submit ingredients or search for a recipe. Toggle.
+ $(document).ready(function() {
+
+  var ingredients = [];
+  var ingredientCount = 0;
+  var recipe = [];
+  var recipeCount = 0;
+
+//Submit ingredients or search for a recipe. Toggle.
   $("#find-recipe-btn").on("click", function () {
     $(".ingredient-search").hide();
     $(".recipe-search").show();
@@ -69,15 +76,11 @@ $(document).ready(function () {
     $(".ingredient-search").show();
   });
 
-
-  var ingredients = [];
-  var ingredientCount = 0;
-  var recipe = [];
-  var recipeCount = 0;
-  var clickPart;
+  //Hide search results.
+  $(".meals").hide();
 
   //To submit a list of user ingredients.
-  $(".submit-ingredient").on("click", function () {
+  $(".submit-ingredient").one("click", function(){
     var ingredientInput = $("#ingredient-input").val().trim();
     ingredients.push(ingredientInput);
     var pIngredient = $("<p>").text(ingredientInput);
@@ -88,7 +91,7 @@ $(document).ready(function () {
 
     var ingredientsSearchUrl = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?ingredients=";
     var ingredientsSearchKey = "&number=1&limitLicense=false&fillIngredients=true&ranking=1&limitLicense=false&mashape-key=ksQNPjlaz5mshWX43x5882DMHPUtp1ynBxNjsnjPXrtU69MEyX";
-
+    
 
     if (ingredientInput === "") {
       console.log("Please choose at least one ingredient.");
@@ -101,9 +104,6 @@ $(document).ready(function () {
     } else {
       $(".ingredient-list").append(pIngredient);
       $("#ingredient-input").val("");
-      // $("#ingredient-input").clear();
-
-
 
       // This will be where we will put the objects from the array.
       var ingredientsQueryUrl = ingredientsSearchUrl;
@@ -111,8 +111,7 @@ $(document).ready(function () {
 
   });
 
-
-  $(".submit-all").on("click", function () {
+  $(".submit-all").on("click", function(){
     var allIngredients = $(".ingredient-list").val().trim();
     console.log(allIngredients);
 
@@ -136,68 +135,48 @@ $(document).ready(function () {
         number: 10,
         method: "GET"
       }
-
-    }).done(function (response) {
-
+      
+    }).done(function(response) {
+    
 
       // For loop to run through all of the objects in the array.
       for (var i = 0; i < response.length; i++) {
         var fridgeImage = response[i].id;
         var recipeInput = response[i].id;
         var dataId = response[i].id;
-        var mealurl = "recipepage.html?id=" + response[i].title;
-
+        //var mealurl = "recipepage.html?id=" + response[i].title;
 
         var resultID = `tab-${i}`;
-        var titleID = `title-${i}`;
-        var linkID = `link-${i}`;
-        var imageID = `image-${i}`;
+            var titleID = `title-${i}`;
+            var linkID = `link-${i}`;
+            var imageID = `image-${i}`;
 
-        var thisResult = `
-          <div class="tabpanel" class="tab-pane active" id="panel-${i}">
-	          <div class="row masonry-container">
-		          <div class="col-md-4 col-sm-6 item">
-                			<div class="thumbnail">
-                        				<div class="caption">
-                                                                   				                          
-                                                                                                     <h3 id="title-${i}"></h3>
-                                  <a id="${linkID}" href="#">
-                                  <img id="${imageID}" /> </a>
+            var thisResult = `
+              <div class="tabpanel tab-pane active" id="panel-${i}">
+                <div class="row masonry-container">
+                  <div class="col-md-4 col-sm-6 item">
+                          <div class="thumbnail">
+                                <div class="caption">                                       
+                                            <h3 id="title-${i}"></h3>
+                                      <a class="clickpart${i}" id="${linkID}" href="#">
+                                      <img id="${imageID}" /> 
+
+                                      </a>
+                            </div>
                         </div>
                     </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-        `;
+            `;
+            $("#search-result").append(thisResult);
 
-        $("#search-result").append(thisResult);
+            $('#image-'+i).attr("src", response[i].image);
+            $(".clickpart"+i).attr("dataId", dataId).attr("title", response[i].title);
+            console.log(response[i].title);
+            $('#title-'+i).text(response[i].title);
+            //$('#link-'+i).attr("href", mealurl);
+            // $('#title-'+i).text(response[i].title);
 
-        $('#image-'+i).attr("src", response[i].image).attr("dataId", dataId);
-        $('#title-'+i).text(response[i].title);
-        $('#link-'+i).attr("href", mealurl);
-        $('#title-'+i).text(response[i].title);
-
-        $('#link-'+ i).on('click', function() {
-          $(this).addClass('clickPart')
-        });
-
-        // var recipeSearchKey = "?mashape-key=ksQNPjlaz5mshWX43x5882DMHPUtp1ynBxNjsnjPXrtU69MEyX";
-
-        // var recipeSearchUrl = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/" + recipeInput + "/summary" + recipeSearchKey;
-
-        // $.ajax ({
-        // 	url: recipeSearchUrl,
-        // 	method: "GET"
-        // }).done(function(response) {
-        // 	console.log(response);
-        // 	console.log("This is the caption number: " + i);
-        // 	// $(".caption" + i).text(response.summary);
-        // 	// $(".caption" + i).append();
-        // 	var desc = response.summary;
-        // 	var cap = $("<p>").html(desc);
-        // 	$(".caption").append(cap);
-
-        // });
 
 
       };
@@ -205,10 +184,12 @@ $(document).ready(function () {
 
     });
 
+    nextPage();
+
   });
 
   //To search a desired recipe.
-  $(".submit-recipe").on("click", function () {
+  $(".submit-recipe").one("click", function(){
     var recipeInput = $("#recipe-input").val().trim();
     recipe.push(recipeInput);
 
@@ -220,35 +201,133 @@ $(document).ready(function () {
     var imagesUrl = "https://spoonacular.com/recipeImages/"
 
 
-
-
-    $.ajax({
+    //Make ajax call and dynamically create the divs using jQuery and string interpolation.
+    $.ajax ({
       url: recipeSearchUrl,
       number: 10,
       method: "GET"
-    }).done(function (response) {
-      console.log(response.results);
+    }).done(function(response) {
+    console.log(response);
 
       for (var i = 0; i < 10; i++) {
         var fridgeImage = response.results[i].id;
         var recipeInput = response.results[i].id;
         var imagesFileName = response.results[i].image;
         var dataId = response.results[i].id;
-        console.log(fridgeImage);
 
-        //Append images.
-        $(".meal-results" + i).attr("src", imagesUrl + imagesFileName).attr("dataId", dataId);
-        $(".meal-results" + i).append();
-        console.log(dataId);
+        var actualImage = imagesUrl + imagesFileName;
+        
+        //var mealurl = "recipepage.html?id=" + response.results[i].title;
 
-        //Append titles.
-        $(".title" + i).text(response.results[i].title);
-        $(".title" + i).append();
+        var resultID = `tab-${i}`;
+            var titleID = `title-${i}`;
+            var linkID = `link-${i}`;
+            var imageID = `image-${i}`;
+
+            var thisResult = `
+              <div class="tabpanel tab-pane active" id="panel-${i}">
+                <div class="row masonry-container">
+                  <div class="col-md-4 col-sm-6 item">
+                          <div class="thumbnail">
+                                <div class="caption">                                       
+                                            <h3 class="test-${i}" id="title-${i}"></h3>
+                                      <a class="clickpart${i}" id="${linkID}" href="#">
+                                      <img id="${imageID}" /> 
+
+                                      </a>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            `;
+            $("#search-result").append(thisResult);
+
+           
+        $('#image-'+i).attr("src", actualImage);
+        $(".clickpart"+i).attr("dataId", dataId).attr("title", response.results[i].title);
+
+            $('.test-'+i).text(response.results[i].title);
+            console.log(response.results[i].title);
+            // console.log(".test"+i);
+            // $('#title-'+i).text(response.results[i].title);
 
       };
     });
+
+    nextPage();
+  })
+});
+
+function nextPage() {
+
+  //When the image on the main page is clicked...
+  // $("#search-result").on("click", "a", function() {
+  $(document).on("click", "a", function() {
+    // console.log($(this).attr("class"));
+    // console.log($(this).attr('clicked', $(event.target[0].className)));
+    var nextInput = $(this).attr("dataId");
+    console.log(this);
+    console.log("test 1  " + nextInput);
+
+      var nextUrl = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/";
+      var nextKey = "/analyzedInstructions?stepBreakdown=false&mashape-key=ksQNPjlaz5mshWX43x5882DMHPUtp1ynBxNjsnjPXrtU69MEyX";
+      var queryNextURL = nextUrl + nextInput + nextKey;
+      // console.log(queryNextURL);
+      $.ajax({
+          url: queryNextURL,
+          method: "GET"
+
+      }).done(function(response) {
+        var outputArray = response[0].steps.length;
+        console.log(outputArray);
+        for (i = 0; i < outputArray; i++) {
+            var directions = response[0].steps[i].step;
+            console.log(directions);
+
+            $(".food-data").append(directions);
+          }
+
+      });
+
+      var input = $(this).attr("dataId");
+      var sum = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/"
+      var sumKey = "/summary?mashape-key=ksQNPjlaz5mshWX43x5882DMHPUtp1ynBxNjsnjPXrtU69MEyX";
+      var sumUrl = sum + input + sumKey;
+
+      $.ajax({
+          url: sumUrl,
+          method: "GET"
+
+      }).done(function(response) {
+        console.log(response.summary);
+        var recipeSummary = response.summary;
+        
+          $(".food-data").append(recipeSummary);
+      });
+
+
+      var input = $(this).attr("title");
+      var url = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&order=relevance&type=video+&videoDefinition=high&q=recipe+";
+      var key = "&key=AIzaSyCa701vEr4W6GgdvKdjZmmIrSS9EHffEIs"
+      console.log("Youtube input ID" + input);
+
+      var queryURL = url + input + key;
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        
+      }).done(function(response) {
+          // console.log(response.items[0].id.videoId);
+
+          var resultInput = response.items[0].id.videoId;
+         
+          var vPlayer = $('<iframe width="560" height="315" src="https://www.youtube.com/embed/' + resultInput + '"frameborder="0" allowfullscreen></iframe>');
+          $(".food-image").html(vPlayer);
+
+      });
+      $("#search-result").hide();
+      $(".meals").show();
   });
 
-// });
-
-
+}
